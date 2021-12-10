@@ -54,32 +54,40 @@ def cal(): #calculator
     else:
         print("Input is unidentified")
     ans = str(input("Select action from the list "))
-    if (ans == "sum" or ans == "sub" or ans == "times" or ans == "div" or ans =="remain"):
-        inp1 = int(input("Enter the 1st integer "))
-        inp2 = int(input("Enter the 2nd integer "))
+    if (ans == "sum" or ans == "sub" or ans == "times" or ans == "div" or ans =="remain") or ans == "power":
         if (ans == "sum"):
+            inp1 = float(input("Enter the 1st number "))
+            inp2 = float(input("Enter the 2nd number "))
             calaction = 1
             outp = int(inp1) + int(inp2)
             print(outp)
         elif (ans == "sub"):
+            inp1 = float(input("Enter the 1st number "))
+            inp2 = float(input("Enter the 2nd number "))
             outp = int(inp1) - int(inp2)
             print(outp)
             calaction = 1
         elif (ans == "times"):
+            inp1 = float(input("Enter the 1st number "))
+            inp2 = float(input("Enter the 2nd number "))
             outp = int(inp1) * int(inp2)
             print(outp)
             calaction = 1
         elif (ans == "div"):
+            inp1 = float(input("Enter the 1st number "))
+            inp2 = float(input("Enter the 2nd number "))
             outp = int(inp1) / int(inp2)
             print(outp)
             calaction = 1
         elif (ans == "remain"):
+            inp1 = float(input("Enter the 1st number "))
+            inp2 = float(input("Enter the 2nd number "))
             outp = int(inp1) % int(inp2)
             print(outp)
             calaction = 1
         elif (ans == "power"):
-            inp1 = float(input("Enter the number"))
-            inp2 = int(input("Enter the power (Must be integer"))
+            inp1 = float(input("Enter the number "))
+            inp2 = int(input("Enter the power (Must be an integer) " ))
             outp = float(inp1) ** float(inp2)
             print(outp)
             calaction = 1
@@ -120,10 +128,9 @@ def changepw():
         print("Password changed: " + str(pwd))
     else:
         print("Password unmatch. Try again.")
-def exportlog(): #export log
-    log.append("Export log")
+def exportlog_f():
     for content in log:
-        logtxt.write(content + "\n")
+        logtxt.write(str(content) + "\n")
     print("Exported. It can be found in your folder.")
     closelogtxt()
 def lock():
@@ -147,7 +154,7 @@ def showlog():
         print(content)
     exportlog = str(input("Export log as a .txt file? y/n "))
     if (exportlog == "y"):
-        exportlog()
+        exportlog_f()
     else:
         print("action skipped")
 def closelogtxt():
@@ -161,7 +168,7 @@ def filecreate():
     filecontent = ""
     filecontent = str(input("Enter the content to be written in the file. "))
     createfile.write(filecontent)
-    log.append(str("File content = ") + str("filecontent"))
+    log.append(str("File content = ") + str(filecontent))
     print("File has been created and filled with content.")
     filecontent = ""
     filename_create = ""
