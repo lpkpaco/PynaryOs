@@ -1,9 +1,24 @@
 import time
 import math
 import os
+import sys
+import webbrowser
 import pwinput
 #Variables section
 forever = 1 #forever loop
+global sys_base
+sys_base = os.name
+global sb_trans
+if (sys_base == "nt"):
+    sb_trans = "Windows"
+    print("PynaryOs based on Windows")
+elif (sys_base == "posix"):
+    sb_trans =  "MacOs/Linux/UNIX"
+    print("PynaryOs based on MacOs/Linux/UNIX")
+global filenow_name
+filenow_name = ""
+global filenow
+filenow = ""
 global pwd
 pwd = "user"
 global pwdcon
@@ -20,7 +35,9 @@ global log
 global calaction
 calaction = 0
 global createfile
-log = ["Activate Os"]
+global ini_log
+ini_log = "Activate Os on " + str(sb_trans)
+log = [ini_log]
 logtxt = open("PynaryLog.txt", "w")
 #functions selection
 def cal(): #calculator
@@ -125,7 +142,7 @@ def changepw():
     global pwdcon
     pwdcon = pwinput.pwinput("Enter new password again: ")
     if (pwdcon == pwd):
-        print("Password changed: " + str(pwd))
+        print("Password changed: ")
     else:
         print("Password unmatch. Try again.")
 def exportlog_f():
@@ -180,6 +197,19 @@ def deletefile(): #delete file
     log.append(str("Delete file: ") + str(deletefile_name))
     print("File has been put into your recycle bin.")
     deletefile_name = ""
+def readfile(): #Open a file (readonly)
+    filenow_name = str(input("Enter file name: "))
+    filenow = open(filenow_name, "r")
+    filenow_content = filenow.read()
+    print(filenow_content)
+    filenow_content = ""
+    filenow_name = ""
+    filenow.close()
+def website_o():
+    global url
+    url = str(input("Enter website: " + "\n"))
+    webbrowser.open(url)
+    log.append("Open wensite url: " + url)
 print("Welcome to PynaryOs. Type help.cmdlist to get command list. ")
 while (forever <= 10):
     if (lockstatus == 0):
@@ -187,23 +217,30 @@ while (forever <= 10):
         if (action == "calculator"): #selected calculator
             cal()
             continue #log in def cal()
-        if (action == "changepwd"): #change pwd
+        elif (action == "changepwd"): #change pwd
             changepw()
             log.append("Change password")
             continue
-        if (action == "showpwd"): #show pwd
+        elif (action == "showpwd"): #show pwd
             print (pwd)
             log.append("Show password")
             continue
-        if (action == "about"): #about
+        elif (action == "about"): #about
             print ("Pynary means of Python and Binary (Means machine code)  :)")
             log.append("Get name_info")
             continue
-        if (action == "lock"): #lock
+        elif (action == "lock"): #lock
             lock()
             log.append("Lock acc")
             continue
-        if (action == "help.cmdlist"): #command list
+        elif (action == "website"):
+            website_o()
+            continue
+        elif (action == "about"):
+            log.append("Go to Github/thisproject")
+            webbrowser.open("https://www.github.com/lpkpaco/PynaryOs")
+            continue
+        elif (action == "help.cmdlist"): #command list
             print('''
             calculator - use calculator
             lock - lock the system
@@ -214,26 +251,46 @@ while (forever <= 10):
             help.cmdlist - get command list
             file.create - create a txt file
             file.delete - delete an existing file in the same folder (or add a path)
-            exit - exit PynaryOs ''')
+            file.read - read a existing file (read only)
+            exit - exit PynaryOs
+            dev.process - show the current development process
+            about - go to website ''')
             log.append("help.cmdlist")
             continue
-        if (action == "timer"): #timer
+        elif (action == "timer"): #timer
             timer()
             continue #log in def timer()
-        if (action == "showlog"): #showlog
+        elif (action == "showlog"): #showlog
             showlog() #log in def showlog()
             continue
-        if (action == "file.create"): #create a file
+        elif (action == "file.create"): #create a file
             filecreate()
             continue #log in def filecreate()
-        if (action == "file.delete"): #log in def deletefile
+        elif (action == "file.delete"): #log in def deletefile
             deletefile()
             continue
-        if (action == "exit"): #exit PynaryOs
-            print("Exitting PynaryOs")
+        elif (action == "file.read"): #log in def readfile()
+            readfile()
+            continue
+        elif (action == "exit"): #exit PynaryOs
+            print("Exiting PynaryOs")
             time.sleep(2)
             log.append("Exit PynaryOs")
             exit()
+        elif (action == "dev.process"):
+            print('''
+            Current process:
+            Security: yes
+            Control over system performance: no
+            Job account: half
+            error detecting aids: no
+            coordination between other software and users: no
+            memory management: no
+            processor management: no
+            device management: N/A
+            file management: half
+            ''')
+            continue
         else:
             print("Unknown command")
             log.append("Unknown command")
