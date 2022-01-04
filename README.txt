@@ -14,7 +14,7 @@ Update log dates: DD/MM/YY
 10/12/2021 Upate log:
 1. Fixed bugs
 2. Added new function: Your password is now secured when entering them. They will be turn into astericks when entering password
-3. Added a patch: Please download and run the "install_patch.bat". Run it as admin. If it fails, please enter "pip install pwinput" in the Win10 command prompt manually.
+3. Added a patch: Please download and run the "batch.bat". Run it as admin. If it fails, please enter "pip install pwinput" in the Win10 command prompt manually.
 
 12/12/2021 Update log:
 1. Fixed bugs
