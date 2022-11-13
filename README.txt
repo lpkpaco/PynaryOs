@@ -20,3 +20,7 @@ Update log dates: DD/MM/YY
 1. Fixed bugs
 2. Added new function: You can read file with 'file.read' command.
 3. Added new function: You can now access websites using the 'website' command
+
+13/11/2022 Update log:
+1. Added multiuser option for admin (default) user. Admin mode can be entered by 'admin' command. The command will not be shown while using 'help.cmdlist'.
+2. Probably the last version due to the bad design of code structure and the bad log system. PynaryOs 2.0 is currently under development.
