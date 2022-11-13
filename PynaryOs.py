@@ -6,6 +6,12 @@ import webbrowser
 import pwinput
 #Variables section
 forever = 1 #forever loop
+global userdict
+userdict = {
+    "admin":".admin",
+}
+global user
+user = "admin"
 global sys_base
 sys_base = os.name
 global sb_trans
@@ -15,6 +21,10 @@ if (sys_base == "nt"):
 elif (sys_base == "posix"):
     sb_trans =  "MacOs/Linux/UNIX"
     print("PynaryOs based on MacOs/Linux/UNIX")
+global userkey
+userkey = ""
+global uservalue
+uservalue = ""
 global filenow_name
 filenow_name = ""
 global filenow
@@ -35,6 +45,10 @@ global log
 global calaction
 calaction = 0
 global createfile
+global temps
+temps = ""
+global userc 
+userc = ""
 global ini_log
 ini_log = "Activate Os on " + str(sb_trans)
 log = [ini_log]
@@ -142,7 +156,8 @@ def changepw():
     global pwdcon
     pwdcon = pwinput.pwinput("Enter new password again: ")
     if (pwdcon == pwd):
-        print("Password changed: ")
+        userdict[userc] = str(pwd)
+        print("Password changed sucessfully")
     else:
         print("Password unmatch. Try again.")
 def exportlog_f():
@@ -210,6 +225,59 @@ def website_o():
     url = str(input("Enter website: " + "\n"))
     webbrowser.open(url)
     log.append("Open wensite url: " + url)
+def adminm():
+    cont = 1
+    print("Loading admin mode...")
+    time.sleep(1.5)
+    print('Welcome to admin mode.')
+    print('''
+add - Add user
+del - Delete user
+view - view user list and password
+quit - Quit admin mode
+''')
+    while (cont == 1):
+        actiona = str(input("Select action: "))
+        if (actiona == "add"):
+            temps = str(input("Username: "))
+            userkey = temps
+            temps = str(pwinput.pwinput("Password: "))
+            uservalue = temps
+            temps = ""
+            userdict[userkey] = uservalue
+            userkey = ""
+            uservalue = ""
+        elif (actiona == "del"):
+            temps = str(input("Username" + "\n"))
+            userkey = temps
+            if (userkey != "admin"):
+                temps = str(pwinput.pwinput("Enter Admin Password: "))
+                adminpwd = userdict.get("admin")
+                if (temps == adminpwd):
+                    print("Deleting...")
+                    time.sleep(1)
+                    del userdict[userkey]
+                    userkey = ""
+                    temps = ""
+                    adminpwd = ""
+                else:
+                    print("Incorrect pwd")
+            else:
+                print("You can't delete admin!")
+        elif (actiona == "view"):
+            print(userdict)
+        elif (actiona == "quit"):
+            cont = 0
+            continue
+        cont_r = str(input("Exit admin mode? (y/n)"))
+        if (cont_r == "y"):
+            cont = 0
+            continue
+        elif (cont_r == "n"):
+            cont = 1
+            continue
+        else:
+            print("?_?")
 print("Welcome to PynaryOs. Type help.cmdlist to get command list. ")
 while (forever <= 10):
     if (lockstatus == 0):
@@ -236,7 +304,7 @@ while (forever <= 10):
         elif (action == "website"):
             website_o()
             continue
-        elif (action == "about"):
+        elif (action == "projweb"):
             log.append("Go to Github/thisproject")
             webbrowser.open("https://www.github.com/lpkpaco/PynaryOs")
             continue
@@ -253,10 +321,18 @@ while (forever <= 10):
             file.delete - delete an existing file in the same folder (or add a path)
             file.read - read a existing file (read only)
             exit - exit PynaryOs
+            showlog - show or export log
             dev.process - show the current development process
-            about - go to website ''')
+            projweb - go to the project page
+            website - access the internet ''')
             log.append("help.cmdlist")
             continue
+        elif (action == "admin"):
+            if (user == "admin"):
+                adminm()
+            else:
+                print("You are not admin")
+            continue #log in def adminm()
         elif (action == "timer"): #timer
             timer()
             continue #log in def timer()
@@ -295,16 +371,23 @@ while (forever <= 10):
             print("Unknown command")
             log.append("Unknown command")
     elif (lockstatus == 1):
-        lockpwd = str(pwinput.pwinput(prompt="Enter password to access the system. (Default pwd: user) "))
-        if (lockpwd == pwd):
-            lockstatus = 0
-            print("Unlocked!")
-            log.append("Unlocked acc")
-            continue
+        userl = str(input("Username: "))
+        if userl in userdict:
+            if (userl == "admin"):
+                user = "admin"
+            else:
+                user = "user"
+            userc = str(userl)
+            userpwd = str(pwinput.pwinput(prompt="Password: "))
+            temps = str(userdict[userl])
+            if (userpwd == temps):
+                lockstatus = 0
+                continue
+            else:
+                print("Wrong pwd")
+                continue
         else:
-            print("Wrong pwd. Try again.")
-            log.append("Wrong pwd login")
-            continue
+            print("User not found")       
     else:
         print("Unknown error occurred")
         log.append("Unknown error_login")
